@@ -62,15 +62,15 @@ public class Sql2oTaskDaoTest {
     public void updateChangesTaskContent() throws Exception {
         String description = "mow the lawn";
         Task task = new Task (description);
-
+        taskDao.add(task);
         taskDao.update(task.getId(), "brush the cat");
         Task updatedTask = taskDao.findById(task.getId());
-        assertNotEquals(initialDescription, updatedTask.getDescription());
+        assertNotEquals(description, updatedTask.getDescription());
     }
 
     @Test
     public void deleteByIdDeletesCorrectTask() throws Exception {
-        Task task = new Task("mow the lawn");
+        Task task = new Task ("mow the lawn");
         taskDao.add(task);
         taskDao.deleteById(task.getId());
         assertEquals(0, taskDao.getAll().size());
@@ -84,7 +84,7 @@ public class Sql2oTaskDaoTest {
         taskDao.add(task);
 
         taskDao.clearAllTasks();
-        assertTrue(taskDao.getAll().size());
+        assertEquals(0, taskDao.getAll().size());
     }
 
 }
