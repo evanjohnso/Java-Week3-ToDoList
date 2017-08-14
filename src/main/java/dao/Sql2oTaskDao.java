@@ -1,5 +1,6 @@
 package dao;
 
+import com.sun.tools.doclets.formats.html.SourceToHTMLConverter;
 import models.Task;
 import org.sql2o.Connection;
 import org.sql2o.Sql2o;
@@ -43,5 +44,40 @@ public class Sql2oTaskDao implements TaskDao { //implementing our interface
                     .addParameter("id", id) //key/value pair, key must match above
                     .executeAndFetchFirst(Task.class); //fetch an individual item
         }
+    }
+
+
+    public void update(int id, String updatedDescription) {
+        String sql = "UPDATE tasks SET description = :description WHERE id=:id";
+        try (Connection con = sql2o.open()) {
+            con.createQuery(sql)
+                    .addParameter("description", updatedDescription)
+                    .addParameter("id", id)
+                    .executeUpdate();
+        } catch (Sql2oException ex) {
+            System.out.println(ex);
+        }
+    }
+
+
+    public void deleteById(int id) {
+        String sql = "DELETE from tasks WHERE id:id";
+        try (Connection con = sql2o.open()) {
+            con.createQuery(sql)
+                    .addParameter("id", id)
+                    .executeUpdate();
+        } catch (Sql2oException ex) {
+        System.out.println(ex);
+        }
+    }
+
+    public void clearAllTasks() {
+        String sql = "DELETE from tasks";
+        try (Connection con = sql2o.open()) {
+            con.createQuery(sql)
+                    .executeUpdate();
+        } catch (Sql2oException ex) {
+        System.out.println(ex);
+    }
     }
 }
