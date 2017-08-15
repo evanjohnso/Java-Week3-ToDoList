@@ -9,11 +9,13 @@ public class Task {
     private boolean completed;
     private LocalDateTime createdAt;
     private int id;
+    private int categoryId;
 
     //Constructor
-    public Task(String description){
+    public Task(String description, int categoryId){
         this.description = description;
         this.completed = false;
+        this.categoryId = categoryId;
         this.createdAt = LocalDateTime.now();
     }
 

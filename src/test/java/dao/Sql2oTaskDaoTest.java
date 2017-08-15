@@ -59,7 +59,7 @@ public class Sql2oTaskDaoTest {
     @Test
     public void updateChangesTaskContent() throws Exception {
         String description = "mow the lawn";
-        Task task = new Task (description);
+        Task task = new Task (description, 2);
         taskDao.add(task);
         taskDao.update(task.getId(), "brush the cat", 0);
         Task updatedTask = taskDao.findById(task.getId());
@@ -77,7 +77,7 @@ public class Sql2oTaskDaoTest {
     @Test
     public void clearAllClearsAll() throws Exception {
         Task task = helper();
-        Task otherTask = new Task("brush the cat");
+        Task otherTask = new Task("brush the cat",2);
         taskDao.add(otherTask);
         taskDao.add(task);
 
@@ -87,7 +87,7 @@ public class Sql2oTaskDaoTest {
 
     //Helper
     public Task helper() {
-        return new Task("mow the lawn");
+        return new Task("mow the lawn", 1);
     }
 
 }
