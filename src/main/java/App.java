@@ -72,8 +72,18 @@ public class App {
         //get: show all tasks
         get("/", (req, res) -> {
             Map<String, Object> model = new HashMap<>();
-//            ArrayList<Task> tasks = Task.getAll();
+
+            List<Category> allCategories = categoryDao.getAllCategories();
+            List<Task> eachCategoriesTask = null;
+
+            for (Category individualCategory: allCategories) {
+                int tempID = individualCategory.getId();
+                categoryDao.getAllTasksByCategory(tempID)
+
+            }
+
             List<Task> allTasks = taskDao.getAll();
+            model.put("eachCategory", allCategories);
             model.put("tasks", allTasks);
 
             return new ModelAndView(model, "index.hbs");
