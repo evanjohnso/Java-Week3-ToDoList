@@ -2,14 +2,21 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import dao.Sql2oTaskDao;
 import models.Task;
+import org.sql2o.Sql2o;
+import org.sql2o.Sql2oException;
 import spark.ModelAndView;
 import spark.template.handlebars.HandlebarsTemplateEngine;
 import static spark.Spark.*;
 
 public class App {
-    public static void main(String[] args) { //type “psvm + tab” to autocreate this
-//        staticFileLocation("/public");
+    public static void main(String[] args) {
+
+        staticFileLocation("/public");
+        String connectionString = "jdbc:h2:~/todolist.db;INIT=RUNSCRIPT from 'classpath:db/create.sql'";
+        Sql2o sql2o = new Sql2o(connectionString,"","");
+        Sql2oTaskDao taskDao = new Sql2oTaskDao(sql2o);
 //
 //        //get: delete all tasks
 //
