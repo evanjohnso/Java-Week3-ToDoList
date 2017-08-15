@@ -72,4 +72,13 @@ public class Sql2oCategoryDao implements CategoryDao {
             e.printStackTrace();
         }
     }
+
+    public void clearAllCategories() {
+        try (Connection con = sql2o.open()) {
+            con.createQuery("DELETE FROM categories")
+                    .executeUpdate();
+        } catch (Sql2oException e) {
+            e.printStackTrace();
+        }
+    }
 }

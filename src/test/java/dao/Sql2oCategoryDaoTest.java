@@ -62,9 +62,31 @@ public class Sql2oCategoryDaoTest {
         categoryDao.add(testing);
         categoryDao.add(new Category("homies" ));
         categoryDao.add(new Category("pickles" ));
+        categoryDao.deleteById(testing.getId());
+        assertEquals(2, categoryDao.getAll().size());
+    }
+
+    @Test
+    public void clearAllCategoriesById() throws Exception {
+        Category firstOne = testOne();
+        categoryDao.add(firstOne);
+        categoryDao.add(new Category("homies" ));
+        categoryDao.add(new Category("pickles" ));
+        categoryDao.clearAllCategories();
+        assertEquals(0, categoryDao.getAll().size());
+    }
+
+    @Test
+    public void deleteMultipleCategoryById() throws Exception {
+        Category testing = testOne();
+        categoryDao.add(testing);
+        categoryDao.add(new Category("homies" ));
+        categoryDao.add(new Category("pickles" ));
         int deletingId = testing.getId();
         categoryDao.deleteById(deletingId);
-        assertEquals(2, categoryDao.getAll().size());
+        categoryDao.deleteById(2);
+        String answer = categoryDao.findById(3).getFocus();
+        assertEquals("pickles", answer);
     }
 
 }
