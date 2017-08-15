@@ -62,4 +62,14 @@ public class Sql2oCategoryDao implements CategoryDao {
             ex.printStackTrace();
         }
     }
+
+    public void deleteById(int nukeIt) {
+        try (Connection con = sql2o.open()) {
+            con.createQuery("DELETE FROM categories WHERE id = :id")
+                    .addParameter("id", nukeIt)
+                    .executeUpdate();
+        } catch (Sql2oException e) {
+            e.printStackTrace();
+        }
+    }
 }
