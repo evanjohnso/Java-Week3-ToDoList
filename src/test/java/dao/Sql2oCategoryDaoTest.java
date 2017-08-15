@@ -63,7 +63,7 @@ public class Sql2oCategoryDaoTest {
         categoryDao.add(new Category("homies" ));
         categoryDao.add(new Category("pickles" ));
         categoryDao.deleteById(testing.getId());
-        assertEquals(2, categoryDao.getAll().size());
+        assertEquals(2, categoryDao.getAllCategories().size());
     }
 
     @Test
@@ -73,7 +73,7 @@ public class Sql2oCategoryDaoTest {
         categoryDao.add(new Category("homies" ));
         categoryDao.add(new Category("pickles" ));
         categoryDao.clearAllCategories();
-        assertEquals(0, categoryDao.getAll().size());
+        assertEquals(0, categoryDao.getAllCategories().size());
     }
 
     @Test

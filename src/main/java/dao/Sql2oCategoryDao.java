@@ -27,7 +27,7 @@ public class Sql2oCategoryDao implements CategoryDao {
         }
     }
 
-    public List<Category> getAll() {
+    public List<Category> getAllCategories() {
         try (Connection con = sql2o.open()) {
             return con.createQuery("SELECT * FROM categories")
                     .executeAndFetch(Category.class);

@@ -11,7 +11,7 @@ public interface CategoryDao {
     void add (Category category);
 
     //read
-    List<Category> getAll();
+    List<Category> getAllCategories();
     List<Task> getAllTasksByCategory (int categoryId);
 
     Category findById(int id);
@@ -22,4 +22,4 @@ public interface CategoryDao {
     //delete
     void deleteById(int id);
     void clearAllCategories();
-}
+    }
