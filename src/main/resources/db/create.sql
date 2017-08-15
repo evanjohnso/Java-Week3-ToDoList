@@ -11,3 +11,4 @@ CREATE TABLE IF NOT EXISTS categories (
  id int PRIMARY KEY auto_increment,
  focus VARCHAR
 );
+

@@ -3,6 +3,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import dao.Sql2oCategoryDao;
 import dao.Sql2oTaskDao;
 import models.Category;
 import models.Task;
@@ -18,6 +19,9 @@ public class App {
         staticFileLocation("/public");
         String connectionString = "jdbc:h2:~/todolist.db;INIT=RUNSCRIPT from 'classpath:db/create.sql'";
         Sql2o sql2o = new Sql2o(connectionString,"","");
+
+        //Instantiate Data Access Objects for task and category
+        Sql2oCategoryDao categoryDao = new Sql2oCategoryDao(sql2o);
         Sql2oTaskDao taskDao = new Sql2oTaskDao(sql2o);
 
         //get: delete all tasks
@@ -33,10 +37,10 @@ public class App {
         //get: show new task form
         get("/tasks/new", (req, res) -> {
             Map<String, Object> model = new HashMap<>();
-//            List<Category> allCategories = taskDao.getAllCategories();
-
-//            model.put("availableCategories", allCategories);
-
+            if (categoryDao.getAllCategories().size() > 0) {
+                List<Category> allCategories = categoryDao.getAllCategories();
+                model.put("availableCategories", allCategories);
+            }
             return new ModelAndView(model, "task-form.hbs");
         }, new HandlebarsTemplateEngine());
 
@@ -44,11 +48,25 @@ public class App {
         post("/tasks/new", (request, response) -> { //URL to make new task on POST route
             Map<String, Object> model = new HashMap<>();
             String description = request.queryParams("description");
-            int thisCategory = Integer.parseInt(request.queryParams("pickles") );
+            String newCategory = request.queryParams("pickles");
+            int thisCategory = Integer.parseInt(request.queryParams("thatCategory"));
+            if (newCategory != null) {
+                categoryDao.add(new Category(newCategory));
+            }
             Task newTask = new Task(description, thisCategory);
             taskDao.add(newTask);
             model.put("task", newTask);
             return new ModelAndView(model, "success.hbs");
+        }, new HandlebarsTemplateEngine());
+
+        //If categories exist, display them
+        post("/newCategory", (request, response) -> {
+            Map<String, Object> model = new HashMap<>();
+            String newFocus = request.queryParams("pickles");
+            categoryDao.add(new Category(newFocus));
+            List<Category> allCategories = categoryDao.getAllCategories();
+            model.put("availableCategories", allCategories);
+            return new ModelAndView(model, "task-form.hbs");
         }, new HandlebarsTemplateEngine());
 
         //get: show all tasks
