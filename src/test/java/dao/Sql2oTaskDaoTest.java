@@ -85,6 +85,14 @@ public class Sql2oTaskDaoTest {
         assertEquals(0, taskDao.getAll().size());
     }
 
+    @Test
+    public void categoryIdIsReturnedCorrectly() throws Exception {
+        Task task = helper();
+        int originalCatId = task.getCategoryId();
+        taskDao.add(task);
+        assertEquals(originalCatId, taskDao.findById(task.getId()).getCategoryId());
+    }
+
     //Helper
     public Task helper() {
         return new Task("mow the lawn", 1);

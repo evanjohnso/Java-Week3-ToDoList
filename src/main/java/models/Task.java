@@ -27,7 +27,10 @@ public class Task {
     public void setId(int id) {
         this.id = id;
     }
-
+    public void setCategoryId(int categoryId) {
+        this.categoryId = categoryId;
+    }
+    //Getters
     public String getDescription() {
         return description;
     }
@@ -44,6 +47,12 @@ public class Task {
         return id;
     }
 
+    public int getCategoryId() {
+        return categoryId;
+    }
+
+
+
     public void update(String content) {
         this.description = content;
     }
@@ -58,6 +67,7 @@ public class Task {
 
         if (completed != task.completed) return false;
         if (id != task.id) return false;
+        if (categoryId != task.categoryId) return false;
         return description.equals(task.description);
     }
 
@@ -66,6 +76,7 @@ public class Task {
         int result = description.hashCode();
         result = 31 * result + (completed ? 1 : 0);
         result = 31 * result + id;
+        result = 31 * result + categoryId;
         return result;
     }
 
