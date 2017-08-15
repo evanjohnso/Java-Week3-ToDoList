@@ -30,7 +30,7 @@ public class Sql2oTaskDaoTest {
 
     @Test
     public void addingCourseSetsId() throws Exception {
-        Task task = new Task ("mow the lawn");
+        Task task = helper();
         int originalTaskId = task.getId();
         taskDao.add(task);
         assertNotEquals(originalTaskId, task.getId()); //how does this work?
@@ -38,7 +38,7 @@ public class Sql2oTaskDaoTest {
 
     @Test
     public void existingTasksCanBeFoundById() throws Exception {
-        Task task = new Task ("mow the lawn");
+        Task task = helper();
         taskDao.add(task); //add to dao (takes care of saving)
         Task foundTask = taskDao.findById(task.getId()); //retrieve
         assertEquals(task, foundTask); //should be the same
@@ -46,7 +46,7 @@ public class Sql2oTaskDaoTest {
 
     @Test
     public void addedTasksAreReturnedFromgetAll() throws Exception {
-        Task task = new Task ("mow the lawn");
+        Task task = helper();
         taskDao.add(task);
         assertEquals(1, taskDao.getAll().size());
     }
@@ -61,14 +61,14 @@ public class Sql2oTaskDaoTest {
         String description = "mow the lawn";
         Task task = new Task (description);
         taskDao.add(task);
-        taskDao.update(task.getId(), "brush the cat");
+        taskDao.update(task.getId(), "brush the cat", 0);
         Task updatedTask = taskDao.findById(task.getId());
         assertNotEquals(description, updatedTask.getDescription());
     }
 
     @Test
     public void deleteByIdDeletesCorrectTask() throws Exception {
-        Task task = new Task ("mow the lawn");
+        Task task = helper();
         taskDao.add(task);
         taskDao.deleteById(task.getId());
         assertEquals(0, taskDao.getAll().size());
@@ -76,13 +76,18 @@ public class Sql2oTaskDaoTest {
 
     @Test
     public void clearAllClearsAll() throws Exception {
-        Task task = new Task("mow the lawn");
+        Task task = helper();
         Task otherTask = new Task("brush the cat");
         taskDao.add(otherTask);
         taskDao.add(task);
 
         taskDao.clearAllTasks();
         assertEquals(0, taskDao.getAll().size());
+    }
+
+    //Helper
+    public Task helper() {
+        return new Task("mow the lawn");
     }
 
 }

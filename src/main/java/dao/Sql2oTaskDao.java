@@ -23,6 +23,8 @@ public class Sql2oTaskDao implements TaskDao { //implementing our interface
                     .bind(task) //map my argument onto the query so we can use information from it
                     .executeUpdate() //run it all
                     .getKey(); //int id is now the row number (row “key”) of db
+
+
             task.setId(id); //update object to set id now from database
         } catch (Sql2oException ex) {
             System.out.println(ex); //oops we have an error!
@@ -31,10 +33,10 @@ public class Sql2oTaskDao implements TaskDao { //implementing our interface
 
     @Override
     public List<Task> getAll() {
-        try(Connection con = sql2o.open()){
-            return con.createQuery("SELECT * FROM tasks") //raw sql
-                    .executeAndFetch(Task.class); //fetch a list
-        }
+            try(Connection con = sql2o.open()){
+                return con.createQuery("SELECT * FROM tasks") //raw sql
+                        .executeAndFetch(Task.class); //fetch a list
+            }
     }
 
     @Override
@@ -46,10 +48,18 @@ public class Sql2oTaskDao implements TaskDao { //implementing our interface
         }
     }
 
+    //find all completed tasks
+    public List<Task> findByCompleted() {
+        try (Connection con = sql2o.open()) {
+            return con.createQuery("SELECT * FROM tasks WHERE completed = (true) ")
+                    .executeAndFetch(Task.class);
+        }
+    }
 
 
-    public void update(int id, String newDescription){
-        String sql = "UPDATE tasks SET description = :description WHERE id=:id";
+
+    public void update(int id, String newDescription, int categoryId){
+        String sql = "UPDATE tasks SET description = :description WHERE id=:id ";
         try(Connection con = sql2o.open()){
             con.createQuery(sql)
                     .addParameter("description", newDescription)
@@ -62,7 +72,7 @@ public class Sql2oTaskDao implements TaskDao { //implementing our interface
 
 
     public void deleteById(int id) {
-        String sql = "DELETE from tasks WHERE id=:id";
+        String sql = "DELETE FROM tasks WHERE id=:id";
         try (Connection con = sql2o.open()) {
             con.createQuery(sql)
                     .addParameter("id", id)
@@ -73,7 +83,7 @@ public class Sql2oTaskDao implements TaskDao { //implementing our interface
     }
 
     public void clearAllTasks() {
-        String sql = "DELETE from tasks";
+        String sql = "DELETE FROM tasks";
         try (Connection con = sql2o.open()) {
             con.createQuery(sql)
                     .executeUpdate();

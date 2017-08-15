@@ -5,13 +5,14 @@ import models.*;
 import java.util.List;
 
 public interface TaskDao {
+
                 //CRUD
         //Create
         void add (Task task);
         //Read
         List<Task> getAll();
         //Update
-        void update (int id, String newDescription);
+        void update(int id, String newDescription, int categoryId);
         //DESTROY!!
         void deleteById(int id);
 
@@ -19,4 +20,6 @@ public interface TaskDao {
         Task findById(int id);
 
         void clearAllTasks();
+
+        List<Task> findByCompleted();
 }
