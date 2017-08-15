@@ -15,7 +15,6 @@ public class Task {
         this.description = description;
         this.completed = false;
         this.createdAt = LocalDateTime.now();
-
     }
 
     //Setters
@@ -30,7 +29,6 @@ public class Task {
     public String getDescription() {
         return description;
     }
-
 
     public boolean getCompleted(){
         return this.completed;

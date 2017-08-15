@@ -5,11 +5,18 @@ import models.*;
 import java.util.List;
 
 public interface TaskDao {
-
-        //create
+                //CRUD
+        //Create
         void add (Task task);
-        //read
+        //Read
         List<Task> getAll();
+        //Update
+        void update (int id, String newDescription);
+        //DESTROY!!
+        void deleteById(int id);
 
+        //Additional Methods
         Task findById(int id);
+
+        void clearAllTasks();
 }
