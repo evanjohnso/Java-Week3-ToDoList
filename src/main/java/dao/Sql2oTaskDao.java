@@ -29,7 +29,6 @@ public class Sql2oTaskDao implements TaskDao { //implementing our interface
                     .executeUpdate() //run it all
                     .getKey(); //int id is now the row number (row “key”) of db
 
-
             task.setId(id); //update object to set id now from database
         } catch (Sql2oException ex) {
             System.out.println(ex); //oops we have an error!

@@ -16,6 +16,10 @@
                     <p><em><a href="/tasks/{{id}}">Details.</a></em></p>
                 {{/each}}
             </ul>
+            <br>
+            <hr>
+
+            <p class="text-muted"><a href="/tasks/{{categoryID}}/deleteAll">Delete All Tasks</a></p>
         {{else}}
             <p>Nothing to do, congrats!</p>
             <p><a href="/tasks/new">Add a task</a></p>

@@ -27,16 +27,17 @@ public class App {
 
 
 //        delete all tasks
-        get("/tasks/delete", (req, res) -> {
+        get("/tasks/:id/deleteAll", (req, res) -> {
             Map<String, Object> model = new HashMap<>();
-            taskDao.clearAllTasks();
-            return new ModelAndView(model, "success.hbs");
+            int nukeThem = Integer.parseInt(req.params("id"));
+            categoryDao.clearAllTasksByCategory(nukeThem);
+            return new ModelAndView(model, "index.hbs");
         }, new HandlebarsTemplateEngine());
+
 //        delete all categories
         get("/categories/delete", (request, response) -> {
             Map<String, Object> model = new HashMap<>();
             categoryDao.clearAllCategories();
-//            taskDao.clearAllTasks();
             return new ModelAndView(model, "success.hbs");
         }, new HandlebarsTemplateEngine());
 
@@ -131,6 +132,7 @@ public class App {
             Map<String, Object> model = new HashMap<>();
             int categorical = Integer.parseInt(request.params("id") );
             List<Task> theseTasks = categoryDao.getAllTasksByCategory(categorical);
+            model.put("categoryID", categorical);
             model.put("tasks", theseTasks);
             return new ModelAndView(model, "index.hbs");
         }, new HandlebarsTemplateEngine());

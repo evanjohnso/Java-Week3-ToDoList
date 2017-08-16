@@ -81,4 +81,12 @@ public class Sql2oCategoryDao implements CategoryDao {
             e.printStackTrace();
         }
     }
+
+    public void clearAllTasksByCategory(int deleting) {
+        try (Connection conn = sql2o.open()) {
+            conn.createQuery("DELETE FROM tasks WHERE categoryid = :categoryid")
+                    .addParameter("categoryid", deleting)
+                    .executeUpdate();
+        }
+    }
 }
