@@ -1,6 +1,7 @@
 package dao;
 
 import com.sun.tools.doclets.formats.html.SourceToHTMLConverter;
+import models.Category;
 import models.Task;
 import org.sql2o.Connection;
 import org.sql2o.Sql2o;
@@ -59,8 +60,6 @@ public class Sql2oTaskDao implements TaskDao { //implementing our interface
                     .executeAndFetch(Task.class);
         }
     }
-
-
 
     public void update(int id, String newDescription, int categoryId){
         String sql = "UPDATE tasks SET description = :description WHERE id=:id ";

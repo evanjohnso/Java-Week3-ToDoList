@@ -1,10 +1,8 @@
 {{#partial "content"}}
 
-    <p>Description:</p>
-
-    <p>{{ task.description }}</p>
-    <h5>Created At:</h5>
-    <p> {{ task.createdAt }}</p>
+    <p>Category: {{thatCategory.id}}</p>
+    <p>Task Description: {{ task.description }}</p>
+    <p>Created At: {{ task.createdAt }}</p>
     <h5>Task status: </h5>
     <p>
         {{#if task.completed }}

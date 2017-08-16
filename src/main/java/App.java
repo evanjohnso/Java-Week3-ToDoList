@@ -24,12 +24,19 @@ public class App {
         Sql2oCategoryDao categoryDao = new Sql2oCategoryDao(sql2o);
         Sql2oTaskDao taskDao = new Sql2oTaskDao(sql2o);
 
-        //get: delete all tasks
 
+
+//        delete all tasks
         get("/tasks/delete", (req, res) -> {
             Map<String, Object> model = new HashMap<>();
-//            Task.clearAllTasks();
             taskDao.clearAllTasks();
+            return new ModelAndView(model, "success.hbs");
+        }, new HandlebarsTemplateEngine());
+//        delete all categories
+        get("/categories/delete", (request, response) -> {
+            Map<String, Object> model = new HashMap<>();
+            categoryDao.clearAllCategories();
+//            taskDao.clearAllTasks();
             return new ModelAndView(model, "success.hbs");
         }, new HandlebarsTemplateEngine());
 
@@ -37,10 +44,8 @@ public class App {
         //get: show new task form
         get("/tasks/new", (req, res) -> {
             Map<String, Object> model = new HashMap<>();
-            if (categoryDao.getAllCategories().size() > 0) {
-                List<Category> allCategories = categoryDao.getAllCategories();
-                model.put("availableCategories", allCategories);
-            }
+            List<Category> allCategories = categoryDao.getAllCategories();
+            model.put("availableCategories", allCategories);
             return new ModelAndView(model, "task-form.hbs");
         }, new HandlebarsTemplateEngine());
 
@@ -48,11 +53,8 @@ public class App {
         post("/tasks/new", (request, response) -> { //URL to make new task on POST route
             Map<String, Object> model = new HashMap<>();
             String description = request.queryParams("description");
-            String newCategory = request.queryParams("pickles");
             int thisCategory = Integer.parseInt(request.queryParams("thatCategory"));
-            if (newCategory != null) {
-                categoryDao.add(new Category(newCategory));
-            }
+
             Task newTask = new Task(description, thisCategory);
             taskDao.add(newTask);
             model.put("task", newTask);
@@ -74,17 +76,10 @@ public class App {
             Map<String, Object> model = new HashMap<>();
 
             List<Category> allCategories = categoryDao.getAllCategories();
-            List<Task> eachCategoriesTask = null;
+//            List<Task> allTasks = taskDao.getAll();
 
-            for (Category individualCategory: allCategories) {
-                int tempID = individualCategory.getId();
-                categoryDao.getAllTasksByCategory(tempID)
-
-            }
-
-            List<Task> allTasks = taskDao.getAll();
             model.put("eachCategory", allCategories);
-            model.put("tasks", allTasks);
+//            model.put("tasks", allTasks);
 
             return new ModelAndView(model, "index.hbs");
         }, new HandlebarsTemplateEngine());
@@ -130,6 +125,16 @@ public class App {
 //            deleteTask.deleteTask();
             return new ModelAndView(model, "success.hbs");
         }, new HandlebarsTemplateEngine());
+
+        //show all tasks of a certain category
+        get("/categories/:id/tasks", (request, response) -> {
+            Map<String, Object> model = new HashMap<>();
+            int categorical = Integer.parseInt(request.params("id") );
+            List<Task> theseTasks = categoryDao.getAllTasksByCategory(categorical);
+            model.put("tasks", theseTasks);
+            return new ModelAndView(model, "index.hbs");
+        }, new HandlebarsTemplateEngine());
+
 //
 
 

@@ -35,7 +35,7 @@ public class Sql2oCategoryDao implements CategoryDao {
     }
 
     public List<Task> getAllTasksByCategory(int categoryId) {
-        String sql = "SELECT * FROM tasks WHERE categoryid = :thisId";
+        String sql = "SELECT * FROM tasks WHERE categoryid = :categoryid";
         try (Connection con = sql2o.open()) {
             return con.createQuery(sql)
                     .addParameter("categoryid", categoryId)
